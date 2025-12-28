@@ -1,0 +1,310 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums
+enum Role {
+  ADMIN
+  STAFF
+  RESIDENT
+  OFFICIAL
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum CivilStatus {
+  SINGLE
+  MARRIED
+  WIDOWED
+  SEPARATED
+  DIVORCED
+}
+
+enum CertificateType {
+  CLEARANCE
+  INDIGENCY
+  RESIDENCY
+  BUSINESS_PERMIT
+  CEDULA
+}
+
+enum CertificateStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RELEASED
+}
+
+// ===========================
+// UNIFIED PERSON MODEL
+// ===========================
+
+// Core person data - single source of truth for all personal information
+model Person {
+  id            String        @id @default(uuid())
+  firstName     String
+  middleName    String?
+  lastName      String
+  birthDate     DateTime
+  birthPlace    String?
+  gender        Gender
+  civilStatus   CivilStatus
+  nationality   String        @default("Filipino")
+  religion      String?
+  occupation    String?
+  contactNumber String?
+  email         String?
+  address       String
+  photo         String?
+  
+  // Relationships
+  household     Household?    @relation(fields: [householdId], references: [id])
+  householdId   String?
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        String?       @unique
+  
+  // Official role (if applicable)
+  officialDetail OfficialDetail?
+  
+  // Related records
+  certificates  Certificate[]
+  appointments  Appointment[]
+  complaints    Complaint[]
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("persons")
+}
+
+// Official details - linked to Person when someone holds an official position
+model OfficialDetail {
+  id          String   @id @default(uuid())
+  position    String   // Barangay Captain, Kagawad, SK Chairman, etc.
+  termStart   DateTime
+  termEnd     DateTime?
+  isActive    Boolean  @default(true)
+  
+  // Link to person
+  person      Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  personId    String   @unique
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("official_details")
+}
+
+// User model for authentication only
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(RESIDENT)
+  isActive  Boolean  @default(true)
+  
+  // Email verification fields
+  emailVerified           Boolean   @default(false)
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+  
+  // Password reset fields
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  
+  // Link to person profile
+  person    Person?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations for features
+  sentMessages      Message[]      @relation("SentMessages")
+  receivedMessages  Message[]      @relation("ReceivedMessages")
+  announcements     Announcement[]
+  notifications     Notification[]
+  assignedComplaints Complaint[]   @relation("AssignedComplaints")
+  auditLogs         AuditLog[]
+
+  @@map("users")
+}
+
+model Household {
+  id              String     @id @default(uuid())
+  householdNumber String     @unique
+  address         String
+  purok           String?
+  
+  // Relationships
+  members         Person[]
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("households")
+}
+
+model Certificate {
+  id            String            @id @default(uuid())
+  controlNumber String            @unique
+  type          CertificateType
+  purpose       String
+  orNumber      String?
+  amount        Float             @default(0)
+  status        CertificateStatus @default(PENDING)
+  remarks       String?
+  
+  // Relationships
+  person        Person            @relation(fields: [personId], references: [id])
+  personId      String
+  
+  // Feature relations
+  messages      Message[]
+  
+  issuedBy      String?
+  issuedAt      DateTime?
+  expiresAt     DateTime?
+  
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@map("certificates")
+}
+
+model Blotter {
+  id            String   @id @default(uuid())
+  caseNumber    String   @unique
+  complainant   String
+  respondent    String
+  incidentDate  DateTime
+  incidentPlace String
+  narrative     String
+  status        String   @default("PENDING")
+  resolution    String?
+  settledAt     DateTime?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("blotters")
+}
+
+// ===========================
+// FEATURE MODELS
+// ===========================
+
+// Message model for messaging system
+model Message {
+  id            String       @id @default(uuid())
+  content       String
+  senderId      String
+  sender        User         @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId    String
+  receiver      User         @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  certificateId String?
+  certificate   Certificate? @relation(fields: [certificateId], references: [id])
+  isRead        Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+
+  @@map("messages")
+}
+
+// Announcement model for public news/events
+model Announcement {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  priority    String    @default("NORMAL") // URGENT, NORMAL, LOW
+  category    String    @default("GENERAL") // GENERAL, EVENT, NOTICE, EMERGENCY
+  isPublished Boolean   @default(true)
+  publishedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("announcements")
+}
+
+// Notification model for push/email notifications
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      String   // CERTIFICATE_STATUS, MESSAGE, ANNOUNCEMENT, APPOINTMENT, COMPLAINT
+  link      String?
+  isRead    Boolean  @default(false)
+  isSent    Boolean  @default(false)
+  emailSent Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+// Appointment model for scheduling visits
+model Appointment {
+  id         String   @id @default(uuid())
+  personId   String
+  person     Person   @relation(fields: [personId], references: [id])
+  purpose    String
+  date       DateTime
+  timeSlot   String   // "09:00-10:00", "10:00-11:00", etc.
+  status     String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED, COMPLETED
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("appointments")
+}
+
+// Complaint model for online complaints/suggestions
+model Complaint {
+  id            String    @id @default(uuid())
+  ticketNumber  String    @unique
+  subject       String
+  description   String
+  category      String    // INFRASTRUCTURE, SERVICE, SAFETY, SANITATION, OTHER
+  isAnonymous   Boolean   @default(false)
+  personId      String?
+  person        Person?   @relation(fields: [personId], references: [id])
+  status        String    @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  resolution    String?
+  assignedTo    String?
+  assignedStaff User?     @relation("AssignedComplaints", fields: [assignedTo], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("complaints")
+}
+
+// AuditLog model for tracking all system activities
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT, VIEW
+  entity    String   // Certificate, Person, User, Message, etc.
+  entityId  String?
+  details   String?
+  oldValues Json?
+  newValues Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}

@@ -1,0 +1,91 @@
+/* Form Field Component Styles */
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+}
+
+.form-field-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.form-field-required {
+    color: var(--red-500);
+    font-weight: 600;
+}
+
+.form-field-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.form-field-error-message {
+    font-size: 0.75rem;
+    color: var(--red-500);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: shake 0.3s ease;
+}
+
+.form-field-error-message::before {
+    content: '⚠';
+    font-size: 0.875rem;
+}
+
+/* Error state styling for inputs */
+.form-field-error input,
+.form-field-error textarea,
+.form-field-error select {
+    border-color: var(--red-500) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.form-field-error input:focus,
+.form-field-error textarea:focus,
+.form-field-error select:focus {
+    border-color: var(--red-500) !important;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Shake animation for error messages */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    75% {
+        transform: translateX(4px);
+    }
+}
+
+/* Character count */
+.form-field-char-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 4px;
+}
+
+.form-field-char-count.warning {
+    color: var(--yellow-500);
+}
+
+.form-field-char-count.error {
+    color: var(--red-500);
+}

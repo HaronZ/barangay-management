@@ -1,0 +1,59 @@
+/* Breadcrumb Navigation Styles */
+
+.breadcrumb {
+    margin-bottom: var(--spacing-lg);
+}
+
+.breadcrumb-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.breadcrumb-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+}
+
+.breadcrumb-link:hover {
+    color: var(--primary-500);
+    background: var(--primary-50);
+}
+
+.breadcrumb-home {
+    padding: var(--spacing-xs);
+}
+
+.breadcrumb-separator {
+    color: var(--gray-300);
+    flex-shrink: 0;
+}
+
+.breadcrumb-current {
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+/* Dark mode */
+[data-theme="dark"] .breadcrumb-link:hover {
+    background: var(--gray-800);
+}
