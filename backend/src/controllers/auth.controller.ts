@@ -10,14 +10,18 @@ import { sendPasswordResetEmail } from '../services/email.service.js';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log('📝 Registration request received:', req.body.email);
         const validatedData = registerSchema.parse(req.body);
+        console.log('✅ Validation passed for:', validatedData.email);
         const result = await authService.register(validatedData);
+        console.log('✅ Registration completed for:', validatedData.email);
         res.status(201).json({
             status: 'success',
             message: 'Registration successful',
             data: result,
         });
     } catch (error) {
+        console.error('❌ Registration error:', error);
         next(error);
     }
 };
