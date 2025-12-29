@@ -3072,3 +3072,547 @@ h6 {
   background: #f1f5f9;
   color: #166534 !important;
 }
+
+/* ===========================
+   MICRO-ANIMATIONS
+   Enhanced hover transitions and loading animations
+   =========================== */
+
+/* ---- Keyframe Animations ---- */
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Up - More dramatic */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide In from Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In from Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Shimmer Loading Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Spin (for loaders) */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Animation Utility Classes ---- */
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.4s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.4s ease-out forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Staggered animations for lists */
+.stagger-1 {
+  animation-delay: 0.05s;
+}
+
+.stagger-2 {
+  animation-delay: 0.1s;
+}
+
+.stagger-3 {
+  animation-delay: 0.15s;
+}
+
+.stagger-4 {
+  animation-delay: 0.2s;
+}
+
+.stagger-5 {
+  animation-delay: 0.25s;
+}
+
+/* ---- Enhanced Button Hover Effects ---- */
+
+.btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+}
+
+.btn-secondary:hover {
+  background: var(--gray-200);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--gray-700);
+}
+
+/* Ripple effect on click */
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.btn:active::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* ---- Card Hover Effects ---- */
+
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Cards that shouldn't move (like form containers) */
+.card-static:hover {
+  transform: none;
+  box-shadow: var(--shadow-md);
+}
+
+/* ---- Table Row Hover ---- */
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background-color: var(--gray-50);
+}
+
+[data-theme="dark"] .table tbody tr:hover {
+  background-color: var(--gray-800);
+}
+
+/* ---- Input Focus Effects ---- */
+
+.form-input {
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+  transform: translateY(-1px);
+}
+
+/* ---- Link Hover Effects ---- */
+
+a {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Underline animation for text links */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--primary-500);
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ---- Nav Item Effects ---- */
+
+.nav-item {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: white !important;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--primary-500);
+  border-radius: 0 4px 4px 0;
+  transition: height 0.2s ease;
+}
+
+.nav-item:hover::before {
+  height: 60%;
+}
+
+.nav-item-active::before {
+  height: 60%;
+}
+
+/* ---- Icon Hover Effects ---- */
+
+.icon-btn {
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  color: var(--primary-500);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* ---- Modal Animations ---- */
+
+.modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- Loading States ---- */
+
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--gray-200) 25%,
+      var(--gray-100) 50%,
+      var(--gray-200) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg,
+      var(--gray-700) 25%,
+      var(--gray-600) 50%,
+      var(--gray-700) 75%);
+  background-size: 200% 100%;
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+/* Loading dots animation */
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+
+  0%,
+  20% {
+    content: '';
+  }
+
+  40% {
+    content: '.';
+  }
+
+  60% {
+    content: '..';
+  }
+
+  80%,
+  100% {
+    content: '...';
+  }
+}
+
+/* ---- Status Badge Pulse ---- */
+
+.status-pending {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---- Page Transitions ---- */
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ---- Notification Badge ---- */
+
+@keyframes notificationPop {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.notification-badge {
+  animation: notificationPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- Stats Counter Animation ---- */
+
+.stat-value {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-value {
+  transform: scale(1.05);
+  color: var(--primary-500);
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1) rotate(5deg);
+  transition: transform 0.3s ease;
+}
+
+/* ---- Progress Bar Animation ---- */
+
+.progress-bar {
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Checkbox/Toggle Animation ---- */
+
+input[type="checkbox"] {
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  animation: bounce 0.3s ease;
+}
+
+/* ---- Tooltip Fade ---- */
+
+.tooltip {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.tooltip-trigger:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Avatar Hover ---- */
+
+.avatar {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- Landing Page Specific Animations ---- */
+
+.landing-hero-content {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.landing-hero h1 {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.landing-hero p {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.landing-hero-buttons {
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.landing-service-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.landing-service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.landing-service-card:hover .service-icon {
+  transform: scale(1.1) rotate(5deg);
+  transition: transform 0.3s ease;
+}
+
+/* ---- Reduced Motion Support ---- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
