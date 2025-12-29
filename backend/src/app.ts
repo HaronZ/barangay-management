@@ -34,6 +34,9 @@ if (process.env.NODE_ENV !== 'test') {
 
 const app = express();
 
+// Trust proxy for Railway/production (required for rate limiting behind reverse proxy)
+app.set('trust proxy', 1);
+
 // Request logging (before other middleware)
 app.use(requestLogger);
 
