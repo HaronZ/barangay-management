@@ -82,7 +82,14 @@ export const register = async (input: RegisterInput) => {
     });
 
     // Send verification email
-    await sendVerificationEmail(email, verificationToken);
+    try {
+        console.log(`📧 Attempting to send verification email to ${email}...`);
+        await sendVerificationEmail(email, verificationToken);
+        console.log(`✅ Verification email sent successfully to ${email}`);
+    } catch (emailError) {
+        console.error(`❌ Failed to send verification email to ${email}:`, emailError);
+        // Don't throw - user is still registered, they can resend later
+    }
 
     // Return success message (NO token - user must verify first)
     return {
@@ -211,7 +218,14 @@ export const resendVerificationEmail = async (email: string) => {
     });
 
     // Send verification email
-    await sendVerificationEmail(email, verificationToken);
+    try {
+        console.log(`📧 Resending verification email to ${email}...`);
+        await sendVerificationEmail(email, verificationToken);
+        console.log(`✅ Verification email resent successfully to ${email}`);
+    } catch (emailError) {
+        console.error(`❌ Failed to resend verification email to ${email}:`, emailError);
+        throw emailError;
+    }
 
     return {
         message: 'If an account exists with this email, a new verification link will be sent.',
