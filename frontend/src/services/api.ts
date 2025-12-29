@@ -8,7 +8,10 @@ import type {
     Household
 } from '../types';
 
-const API_URL = '/api';
+// Use environment variable in production, fallback to /api for development proxy
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
+console.log('🌐 API URL:', API_URL);
 
 // Create axios instance
 const api = axios.create({
