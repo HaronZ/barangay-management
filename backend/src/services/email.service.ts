@@ -4,6 +4,12 @@ import nodemailer from 'nodemailer';
 const createTransporter = () => {
     // Check if SMTP settings are configured
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+        console.log('📧 SMTP Configuration detected:');
+        console.log(`   Host: ${process.env.SMTP_HOST}`);
+        console.log(`   Port: ${process.env.SMTP_PORT || '587'}`);
+        console.log(`   User: ${process.env.SMTP_USER}`);
+        console.log(`   From: ${process.env.SMTP_FROM || 'Not set'}`);
+
         return nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: parseInt(process.env.SMTP_PORT || '587'),
@@ -16,6 +22,7 @@ const createTransporter = () => {
     }
 
     // Fallback: Log emails to console (for development)
+    console.log('⚠️ SMTP not configured - emails will be logged to console');
     return null;
 };
 
@@ -73,8 +80,13 @@ export const sendPasswordResetEmail = async (email: string, resetToken: string) 
     };
 
     if (transporter) {
-        await transporter.sendMail(emailContent);
-        console.log(`📧 Password reset email sent to ${email}`);
+        try {
+            await transporter.sendMail(emailContent);
+            console.log(`📧 Password reset email sent to ${email}`);
+        } catch (error) {
+            console.error('❌ Failed to send password reset email:', error);
+            throw error; // Re-throw so the API can handle it
+        }
     } else {
         // Development fallback: log to console
         console.log('\n========================================');
@@ -142,8 +154,13 @@ export const sendVerificationEmail = async (email: string, verificationToken: st
     };
 
     if (transporter) {
-        await transporter.sendMail(emailContent);
-        console.log(`📧 Verification email sent to ${email}`);
+        try {
+            await transporter.sendMail(emailContent);
+            console.log(`📧 Verification email sent to ${email}`);
+        } catch (error) {
+            console.error('❌ Failed to send verification email:', error);
+            throw error; // Re-throw so the API can handle it
+        }
     } else {
         // Development fallback: log to console
         console.log('\n========================================');
