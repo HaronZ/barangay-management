@@ -3061,3 +3061,14 @@ h6 {
 [data-theme="dark"] .landing-about-feature p {
   color: #94a3b8 !important;
 }
+
+/* CTA Section Dark Mode Fix */
+[data-theme="dark"] .landing-cta .btn-primary {
+  background: white;
+  color: #166534 !important;
+}
+
+[data-theme="dark"] .landing-cta .btn-primary:hover {
+  background: #f1f5f9;
+  color: #166534 !important;
+}
