@@ -126,8 +126,16 @@ export default function Layout() {
 
     return (
         <div className="app-layout">
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div
+                    className="mobile-overlay active"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="sidebar">
+            <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
                 {/* Logo */}
                 <div
                     style={{
@@ -207,16 +215,22 @@ export default function Layout() {
             <button
                 className="mobile-menu-btn"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle mobile menu"
                 style={{
                     display: 'none',
                     position: 'fixed',
                     top: 'var(--spacing-md)',
                     left: 'var(--spacing-md)',
-                    zIndex: 100,
+                    zIndex: 1001,
                     padding: 'var(--spacing-sm)',
-                    background: 'white',
+                    background: 'var(--gray-800)',
+                    color: 'white',
                     borderRadius: 'var(--radius-md)',
-                    boxShadow: 'var(--shadow-md)',
+                    boxShadow: 'var(--shadow-lg)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
