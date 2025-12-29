@@ -24,6 +24,7 @@ import Households from './pages/Households';
 import Certificates from './pages/Certificates';
 import Blotters from './pages/Blotters';
 import Notifications from './pages/Notifications';
+import DashboardTrackRequest from './pages/DashboardTrackRequest';
 
 // Layout and Guards
 import Layout from './components/layout/Layout';
@@ -92,7 +93,7 @@ function AppRoutes() {
         <Routes>
             {/* Public Routes */}
             <Route path="/" element={<LandingPage />} />
-            <Route path="/track" element={<TrackRequest />} />
+            <Route path="/track-public" element={<TrackRequest />} />
             <Route path="/announcements" element={<Announcements />} />
 
             {/* Auth Routes */}
@@ -154,6 +155,13 @@ function AppRoutes() {
                 </ProtectedRoute>
             }>
                 <Route index element={<Certificates />} />
+            </Route>
+            <Route path="/track" element={
+                <ProtectedRoute>
+                    <Layout />
+                </ProtectedRoute>
+            }>
+                <Route index element={<DashboardTrackRequest />} />
             </Route>
             <Route path="/blotters" element={
                 <ProtectedRoute>
