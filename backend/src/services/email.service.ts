@@ -1,52 +1,16 @@
-import { Resend } from 'resend';
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
-// Initialize Resend client if API key is available
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-
-// Email configuration
-const getFromEmail = () => {
-    // Resend requires a verified domain or uses their default
-    if (resend) {
-        // Use Resend's default sending domain if no custom domain is set
-        return process.env.EMAIL_FROM || 'Barangay Management <onboarding@resend.dev>';
-    }
-    return process.env.SMTP_FROM || 'Barangay Management <noreply@barangay.gov.ph>';
-};
-
-const getFrontendUrl = () => process.env.FRONTEND_URL || 'http://localhost:5173';
-
-// Log email provider on startup
-if (resend) {
-    console.log('📧 Email Provider: Resend');
-    console.log(`   From: ${getFromEmail()}`);
-} else if (process.env.SMTP_HOST) {
-    console.log('📧 Email Provider: SMTP');
-    console.log(`   Host: ${process.env.SMTP_HOST}`);
-    console.log(`   User: ${process.env.SMTP_USER}`);
+// Initialize SendGrid if API key is available
+if (process.env.SENDGRID_API_KEY) {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log('📧 Email Provider: SendGrid');
+    console.log(`   From: ${process.env.EMAIL_FROM || 'Not configured'}`);
 } else {
-    console.log('⚠️ No email provider configured - emails will be logged to console');
+    console.log('⚠️ SENDGRID_API_KEY not configured - emails will be logged to console');
 }
 
-// Create SMTP transporter (fallback if Resend not available)
-const createSMTPTransporter = () => {
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS?.replace(/\s/g, '');
-
-    if (smtpHost && smtpUser && smtpPass) {
-        return nodemailer.createTransport({
-            host: smtpHost,
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
-            auth: {
-                user: smtpUser,
-                pass: smtpPass,
-            },
-        });
-    }
-    return null;
-};
+const getFrontendUrl = () => process.env.FRONTEND_URL || 'http://localhost:5173';
+const getFromEmail = () => process.env.EMAIL_FROM || 'noreply@example.com';
 
 // HTML Templates
 const createEmailTemplate = (title: string, content: string, buttonText: string, buttonUrl: string) => `
@@ -72,48 +36,32 @@ const createEmailTemplate = (title: string, content: string, buttonText: string,
     </div>
 `;
 
-// Send email using Resend or SMTP
+// Send email using SendGrid
 const sendEmail = async (to: string, subject: string, html: string, text: string) => {
     const from = getFromEmail();
 
-    // Try Resend first
-    if (resend) {
+    if (process.env.SENDGRID_API_KEY) {
         try {
-            console.log(`📧 Sending email via Resend to ${to}...`);
-            const { data, error } = await resend.emails.send({
-                from,
+            console.log(`📧 Sending email via SendGrid to ${to}...`);
+
+            const msg = {
                 to,
+                from,
                 subject,
-                html,
                 text,
-            });
+                html,
+            };
 
-            if (error) {
-                console.error('❌ Resend error:', error);
-                throw new Error(error.message);
-            }
-
-            console.log(`✅ Email sent via Resend to ${to}`);
-            console.log(`   ID: ${data?.id}`);
-            return true;
-        } catch (error) {
-            console.error('❌ Failed to send email via Resend:', error);
-            throw error;
-        }
-    }
-
-    // Fallback to SMTP
-    const transporter = createSMTPTransporter();
-    if (transporter) {
-        try {
-            console.log(`📧 Sending email via SMTP to ${to}...`);
-            const info = await transporter.sendMail({ from, to, subject, html, text });
-            console.log(`✅ Email sent via SMTP to ${to}`);
-            console.log(`   Message ID: ${info.messageId}`);
+            const response = await sgMail.send(msg);
+            console.log(`✅ Email sent via SendGrid to ${to}`);
+            console.log(`   Status: ${response[0].statusCode}`);
             return true;
         } catch (error: unknown) {
-            const err = error as Error & { code?: string };
-            console.error('❌ SMTP error:', err.message);
+            const err = error as Error & { response?: { body?: unknown } };
+            console.error('❌ SendGrid error:', err.message);
+            if (err.response?.body) {
+                console.error('   Response:', JSON.stringify(err.response.body));
+            }
             throw error;
         }
     }
@@ -123,6 +71,7 @@ const sendEmail = async (to: string, subject: string, html: string, text: string
     console.log('📧 EMAIL (Development Mode)');
     console.log('========================================');
     console.log(`To: ${to}`);
+    console.log(`From: ${from}`);
     console.log(`Subject: ${subject}`);
     console.log('========================================\n');
     return true;
