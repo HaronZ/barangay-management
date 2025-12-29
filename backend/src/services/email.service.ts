@@ -3,26 +3,44 @@ import nodemailer from 'nodemailer';
 // Configure email transporter
 const createTransporter = () => {
     // Check if SMTP settings are configured
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-        console.log('📧 SMTP Configuration detected:');
-        console.log(`   Host: ${process.env.SMTP_HOST}`);
-        console.log(`   Port: ${process.env.SMTP_PORT || '587'}`);
-        console.log(`   User: ${process.env.SMTP_USER}`);
-        console.log(`   From: ${process.env.SMTP_FROM || 'Not set'}`);
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpUser = process.env.SMTP_USER;
+    // Remove any spaces from app password (Gmail app passwords have spaces for readability but should be used without)
+    const smtpPass = process.env.SMTP_PASS?.replace(/\s/g, '');
 
-        return nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
+    if (smtpHost && smtpUser && smtpPass) {
+        console.log('📧 SMTP Configuration detected:');
+        console.log(`   Host: ${smtpHost}`);
+        console.log(`   Port: ${process.env.SMTP_PORT || '587'}`);
+        console.log(`   User: ${smtpUser}`);
+        console.log(`   From: ${process.env.SMTP_FROM || 'Not set'}`);
+        console.log(`   Pass: ${smtpPass ? '[CONFIGURED]' : '[MISSING]'}`);
+
+        const transporter = nodemailer.createTransport({
+            host: smtpHost,
             port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
+            secure: process.env.SMTP_SECURE === 'true', // false for port 587 (STARTTLS)
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: smtpUser,
+                pass: smtpPass,
             },
         });
+
+        // Verify connection on first use
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error('❌ SMTP Connection Failed:', error.message);
+            } else {
+                console.log('✅ SMTP Server is ready to send emails');
+            }
+        });
+
+        return transporter;
     }
 
     // Fallback: Log emails to console (for development)
     console.log('⚠️ SMTP not configured - emails will be logged to console');
+    console.log('   Missing:', !smtpHost ? 'SMTP_HOST' : '', !smtpUser ? 'SMTP_USER' : '', !smtpPass ? 'SMTP_PASS' : '');
     return null;
 };
 
@@ -81,10 +99,17 @@ export const sendPasswordResetEmail = async (email: string, resetToken: string) 
 
     if (transporter) {
         try {
-            await transporter.sendMail(emailContent);
-            console.log(`📧 Password reset email sent to ${email}`);
-        } catch (error) {
-            console.error('❌ Failed to send password reset email:', error);
+            console.log(`📧 Attempting to send password reset email to ${email}...`);
+            const info = await transporter.sendMail(emailContent);
+            console.log(`✅ Password reset email sent to ${email}`);
+            console.log(`   Message ID: ${info.messageId}`);
+            console.log(`   Response: ${info.response}`);
+        } catch (error: unknown) {
+            const err = error as Error & { code?: string; responseCode?: number };
+            console.error('❌ Failed to send password reset email:');
+            console.error(`   Error: ${err.message}`);
+            console.error(`   Code: ${err.code || 'N/A'}`);
+            console.error(`   Response Code: ${err.responseCode || 'N/A'}`);
             throw error; // Re-throw so the API can handle it
         }
     } else {
@@ -155,10 +180,17 @@ export const sendVerificationEmail = async (email: string, verificationToken: st
 
     if (transporter) {
         try {
-            await transporter.sendMail(emailContent);
-            console.log(`📧 Verification email sent to ${email}`);
-        } catch (error) {
-            console.error('❌ Failed to send verification email:', error);
+            console.log(`📧 Attempting to send verification email to ${email}...`);
+            const info = await transporter.sendMail(emailContent);
+            console.log(`✅ Verification email sent to ${email}`);
+            console.log(`   Message ID: ${info.messageId}`);
+            console.log(`   Response: ${info.response}`);
+        } catch (error: unknown) {
+            const err = error as Error & { code?: string; responseCode?: number };
+            console.error('❌ Failed to send verification email:');
+            console.error(`   Error: ${err.message}`);
+            console.error(`   Code: ${err.code || 'N/A'}`);
+            console.error(`   Response Code: ${err.responseCode || 'N/A'}`);
             throw error; // Re-throw so the API can handle it
         }
     } else {
