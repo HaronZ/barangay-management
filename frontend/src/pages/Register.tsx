@@ -4,7 +4,7 @@ import { Building2, Mail, Lock, User, Loader2, ArrowRight, CheckCircle, MailChec
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = '/api';
 
 export default function Register() {
     const [formData, setFormData] = useState({

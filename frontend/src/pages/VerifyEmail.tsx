@@ -3,7 +3,7 @@ import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Building2, CheckCircle, XCircle, Loader2, Mail, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = '/api';
 
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
