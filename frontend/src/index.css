@@ -1325,10 +1325,11 @@ h6 {
 .landing-section-header h2 {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-md);
+  color: #111827;
 }
 
 .landing-section-header p {
-  color: var(--gray-600);
+  color: #374151;
   font-size: 1.125rem;
 }
 
@@ -1366,11 +1367,11 @@ h6 {
 .landing-service-card h3 {
   font-size: 1.25rem;
   margin-bottom: var(--spacing-sm);
-  color: var(--gray-900);
+  color: #111827;
 }
 
 .landing-service-card p {
-  color: var(--gray-700);
+  color: #374151;
   font-size: 0.875rem;
   margin-bottom: var(--spacing-md);
   line-height: 1.6;
@@ -1410,10 +1411,11 @@ h6 {
 .landing-about-content h2 {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-lg);
+  color: #111827;
 }
 
 .landing-about-content>p {
-  color: var(--gray-700);
+  color: #374151;
   font-size: 1.125rem;
   margin-bottom: var(--spacing-xl);
   line-height: 1.7;
@@ -1439,10 +1441,11 @@ h6 {
 .landing-about-feature h4 {
   font-size: 1rem;
   margin-bottom: var(--spacing-xs);
+  color: #111827;
 }
 
 .landing-about-feature p {
-  color: var(--gray-600);
+  color: #374151;
   font-size: 0.875rem;
 }
 
@@ -1514,10 +1517,11 @@ h6 {
 .landing-contact-card h3 {
   font-size: 1.125rem;
   margin-bottom: var(--spacing-sm);
+  color: #111827;
 }
 
 .landing-contact-card p {
-  color: var(--gray-600);
+  color: #374151;
   font-size: 0.875rem;
   line-height: 1.6;
 }
