@@ -41,7 +41,7 @@ export default function TrackRequest() {
         setNotFound(false);
 
         try {
-            const response = await fetch(`http://localhost:3000/api/tracking/public/${controlNumber}`);
+            const response = await fetch(`/api/tracking/public/${controlNumber}`);
             const data = await response.json();
 
             if (!response.ok) {

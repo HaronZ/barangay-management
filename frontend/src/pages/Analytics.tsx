@@ -33,8 +33,8 @@ export default function Analytics() {
             const headers = { Authorization: `Bearer ${token}` };
 
             const [statsRes, demoRes] = await Promise.all([
-                fetch('http://localhost:3000/api/analytics/dashboard', { headers }),
-                fetch('http://localhost:3000/api/analytics/demographics', { headers }),
+                fetch('/api/analytics/dashboard', { headers }),
+                fetch('/api/analytics/demographics', { headers }),
             ]);
 
             const statsData = await statsRes.json();

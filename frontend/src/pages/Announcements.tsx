@@ -41,7 +41,7 @@ export default function Announcements() {
 
     const fetchAnnouncements = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/announcements');
+            const response = await fetch('/api/announcements');
             const data = await response.json();
             if (response.ok) {
                 setAnnouncements(data.data);

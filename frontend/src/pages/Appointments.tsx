@@ -44,7 +44,7 @@ export default function Appointments() {
     const fetchAppointments = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/appointments/my-appointments', {
+            const response = await fetch('/api/appointments/my-appointments', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -61,7 +61,7 @@ export default function Appointments() {
     const fetchAvailableSlots = async (date: string) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:3000/api/appointments/slots/${date}`, {
+            const response = await fetch(`/api/appointments/slots/${date}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -82,7 +82,7 @@ export default function Appointments() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/appointments', {
+            const response = await fetch('/api/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -42,7 +42,7 @@ export default function Complaints() {
     const fetchComplaints = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/complaints/my-complaints', {
+            const response = await fetch('/api/complaints/my-complaints', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -60,7 +60,7 @@ export default function Complaints() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/complaints', {
+            const response = await fetch('/api/complaints', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

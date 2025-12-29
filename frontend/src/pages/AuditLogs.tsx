@@ -62,7 +62,7 @@ export default function AuditLogs() {
             if (filters.action) params.append('action', filters.action);
             if (filters.entity) params.append('entity', filters.entity);
 
-            const response = await fetch(`http://localhost:3000/api/audit?${params}`, {
+            const response = await fetch(`/api/audit?${params}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
