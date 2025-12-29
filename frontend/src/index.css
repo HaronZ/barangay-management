@@ -1325,11 +1325,11 @@ h6 {
 .landing-section-header h2 {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-md);
-  color: #111827;
+  color: #111827 !important;
 }
 
 .landing-section-header p {
-  color: #374151;
+  color: #374151 !important;
   font-size: 1.125rem;
 }
 
@@ -1367,11 +1367,11 @@ h6 {
 .landing-service-card h3 {
   font-size: 1.25rem;
   margin-bottom: var(--spacing-sm);
-  color: #111827;
+  color: #111827 !important;
 }
 
 .landing-service-card p {
-  color: #374151;
+  color: #374151 !important;
   font-size: 0.875rem;
   margin-bottom: var(--spacing-md);
   line-height: 1.6;
@@ -1411,11 +1411,11 @@ h6 {
 .landing-about-content h2 {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-lg);
-  color: #111827;
+  color: #111827 !important;
 }
 
 .landing-about-content>p {
-  color: #374151;
+  color: #374151 !important;
   font-size: 1.125rem;
   margin-bottom: var(--spacing-xl);
   line-height: 1.7;
@@ -1441,11 +1441,11 @@ h6 {
 .landing-about-feature h4 {
   font-size: 1rem;
   margin-bottom: var(--spacing-xs);
-  color: #111827;
+  color: #111827 !important;
 }
 
 .landing-about-feature p {
-  color: #374151;
+  color: #374151 !important;
   font-size: 0.875rem;
 }
 
@@ -2976,4 +2976,88 @@ h6 {
 
 [data-theme="dark"] .password-toggle-btn:hover {
   color: #94a3b8;
+}
+
+/* ===========================
+   Landing Page Dark Mode Fixes
+   =========================== */
+
+/* Services Section */
+[data-theme="dark"] .landing-services {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .landing-section-header h2 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .landing-section-header p {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .landing-section-tag {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+/* Service Cards */
+[data-theme="dark"] .landing-service-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+[data-theme="dark"] .landing-service-card h3 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .landing-service-card p {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .landing-service-link {
+  color: #4ade80;
+}
+
+/* Contact Section */
+[data-theme="dark"] .landing-contact {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .landing-contact-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+[data-theme="dark"] .landing-contact-card h3 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .landing-contact-card p {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .landing-contact-icon {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+/* About Section */
+[data-theme="dark"] .landing-about {
+  background: #1e293b;
+}
+
+[data-theme="dark"] .landing-about-content h2 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .landing-about-content>p {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .landing-about-feature h4 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .landing-about-feature p {
+  color: #94a3b8 !important;
 }
