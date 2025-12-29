@@ -20,5 +20,5 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
-# Start development server
-CMD ["npm", "run", "dev"]
+# Run migrations and start server
+CMD npx prisma migrate deploy && npm run dev
