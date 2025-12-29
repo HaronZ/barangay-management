@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, FileText, Clock, CheckCircle, XCircle, AlertCircle, ArrowRight, Building2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config/api';
 
 interface TrackingResult {
     controlNumber: string;
@@ -41,7 +42,7 @@ export default function TrackRequest() {
         setNotFound(false);
 
         try {
-            const response = await fetch(`/api/tracking/public/${controlNumber}`);
+            const response = await fetch(`${API_URL}/tracking/public/${controlNumber}`);
             const data = await response.json();
 
             if (!response.ok) {

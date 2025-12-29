@@ -3,6 +3,7 @@ import {
     BarChart3, Users, FileText, AlertCircle, Calendar, TrendingUp
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config/api';
 
 interface DashboardStats {
     residents: { total: number };
@@ -33,8 +34,8 @@ export default function Analytics() {
             const headers = { Authorization: `Bearer ${token}` };
 
             const [statsRes, demoRes] = await Promise.all([
-                fetch('/api/analytics/dashboard', { headers }),
-                fetch('/api/analytics/demographics', { headers }),
+                fetch(`${API_URL}/analytics/dashboard`, { headers }),
+                fetch(`${API_URL}/analytics/demographics`, { headers }),
             ]);
 
             const statsData = await statsRes.json();

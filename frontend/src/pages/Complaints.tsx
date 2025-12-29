@@ -3,6 +3,7 @@ import {
     AlertCircle, Send, Clock, CheckCircle, XCircle, Plus, X
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config/api';
 
 interface Complaint {
     id: string;
@@ -42,7 +43,7 @@ export default function Complaints() {
     const fetchComplaints = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/complaints/my-complaints', {
+            const response = await fetch(`${API_URL}/complaints/my-complaints`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -60,7 +61,7 @@ export default function Complaints() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/complaints', {
+            const response = await fetch(`${API_URL}/complaints`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

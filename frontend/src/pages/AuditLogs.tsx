@@ -3,6 +3,7 @@ import {
     FileText, Filter, ChevronLeft, ChevronRight, Clock
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config/api';
 
 interface AuditLog {
     id: string;
@@ -62,7 +63,7 @@ export default function AuditLogs() {
             if (filters.action) params.append('action', filters.action);
             if (filters.entity) params.append('entity', filters.entity);
 
-            const response = await fetch(`/api/audit?${params}`, {
+            const response = await fetch(`${API_URL}/audit?${params}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     Megaphone, Calendar, AlertTriangle, Info, Star, Building2
 } from 'lucide-react';
+import { API_URL } from '../config/api';
 
 interface Announcement {
     id: string;
@@ -41,7 +42,7 @@ export default function Announcements() {
 
     const fetchAnnouncements = async () => {
         try {
-            const response = await fetch('/api/announcements');
+            const response = await fetch(`${API_URL}/announcements`);
             const data = await response.json();
             if (response.ok) {
                 setAnnouncements(data.data);

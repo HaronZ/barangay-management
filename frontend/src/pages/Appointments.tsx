@@ -3,6 +3,7 @@ import {
     Calendar, Clock, Plus, X, CheckCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config/api';
 
 interface Appointment {
     id: string;
@@ -44,7 +45,7 @@ export default function Appointments() {
     const fetchAppointments = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/appointments/my-appointments', {
+            const response = await fetch(`${API_URL}/appointments/my-appointments`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -61,7 +62,7 @@ export default function Appointments() {
     const fetchAvailableSlots = async (date: string) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`/api/appointments/slots/${date}`, {
+            const response = await fetch(`${API_URL}/appointments/slots/${date}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -82,7 +83,7 @@ export default function Appointments() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/appointments', {
+            const response = await fetch(`${API_URL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

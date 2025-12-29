@@ -23,6 +23,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../config/api';
 
 interface NavItemProps {
     to: string;
@@ -68,7 +69,7 @@ export default function Layout() {
                 const token = localStorage.getItem('token');
                 if (!token) return;
 
-                const response = await fetch('/api/notifications/unread/count', {
+                const response = await fetch(`${API_URL}/notifications/unread/count`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await response.json();

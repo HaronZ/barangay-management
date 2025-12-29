@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useDebounce } from '../hooks/useDebounce';
+import { API_URL } from '../config/api';
 
 interface StaffMember {
     id: string;
@@ -52,7 +53,7 @@ export default function Messages() {
     const fetchConversations = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/messages/conversations', {
+            const response = await fetch(`${API_URL}/messages/conversations`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -69,7 +70,7 @@ export default function Messages() {
     const fetchMessages = async (partnerId: string) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`/api/messages/${partnerId}`, {
+            const response = await fetch(`${API_URL}/messages/${partnerId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
@@ -92,7 +93,7 @@ export default function Messages() {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/messages', {
+            const response = await fetch(`${API_URL}/messages`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ export default function Messages() {
         setIsLoadingStaff(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/messages/staff', {
+            const response = await fetch(`${API_URL}/messages/staff`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await response.json();
