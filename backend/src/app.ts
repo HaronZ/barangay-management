@@ -62,6 +62,7 @@ const allowedOrigins = [
     'http://localhost:8090',  // Mobile web preview
     'http://10.140.50.179:8090',  // Mobile web preview on LAN
     'http://10.140.50.179:5173',  // Frontend on LAN
+    'https://barangay-management.up.railway.app',  // Railway frontend
 ];
 app.use(cors({
     origin: (origin, callback) => {
