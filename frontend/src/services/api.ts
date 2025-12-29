@@ -8,9 +8,23 @@ import type {
     Household
 } from '../types';
 
-// Use environment variable in production, fallback to /api for development proxy
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+// Auto-detect API URL based on environment
+const getApiUrl = (): string => {
+    // If VITE_API_URL is set, use it
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
 
+    // In production (Railway), use the backend URL
+    if (typeof window !== 'undefined' && window.location.hostname.includes('railway.app')) {
+        return 'https://barangay-management-production.up.railway.app/api';
+    }
+
+    // Default to /api for local development (Vite proxy)
+    return '/api';
+};
+
+const API_URL = getApiUrl();
 console.log('🌐 API URL:', API_URL);
 
 // Create axios instance
