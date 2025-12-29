@@ -3,7 +3,17 @@ import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Building2, CheckCircle, XCircle, Loader2, Mail, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const API_URL = '/api';
+// Auto-detect API URL based on environment
+const getApiUrl = (): string => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    if (typeof window !== 'undefined' && window.location.hostname.includes('railway.app')) {
+        return 'https://barangay-management-production.up.railway.app/api';
+    }
+    return '/api';
+};
+const API_URL = getApiUrl();
 
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();

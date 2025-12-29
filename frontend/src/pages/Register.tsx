@@ -4,7 +4,17 @@ import { Building2, Mail, Lock, User, Loader2, ArrowRight, CheckCircle, MailChec
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-const API_URL = '/api';
+// Auto-detect API URL based on environment
+const getApiUrl = (): string => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    if (typeof window !== 'undefined' && window.location.hostname.includes('railway.app')) {
+        return 'https://barangay-management-production.up.railway.app/api';
+    }
+    return '/api';
+};
+const API_URL = getApiUrl();
 
 export default function Register() {
     const [formData, setFormData] = useState({
