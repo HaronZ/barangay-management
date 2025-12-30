@@ -2,6 +2,12 @@
 
 A full-stack web application for managing barangay residents, households, certificates, and services.
 
+## 🌐 Live Demo
+
+**🚀 [View Live Application](https://barangay-management.up.railway.app/)**
+
+> Deployed on Railway with PostgreSQL database
+
 ## Tech Stack
 
 - **Frontend**: React 18 + TypeScript + Vite
