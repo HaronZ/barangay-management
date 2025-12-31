@@ -5,9 +5,9 @@ import { Platform } from 'react-native';
 // iOS Simulator: localhost
 // Physical Device: Your Machine's Local IP (e.g., 192.168.1.X)
 const BASE_URL = Platform.select({
-    android: 'http://10.0.2.2:3000/api',
-    ios: 'http://localhost:3000/api',
-    default: 'http://localhost:3000/api',
+    android: 'http://192.168.254.109:3000/api',
+    ios: 'http://192.168.254.109:3000/api',
+    default: 'http://192.168.254.109:3000/api',
 });
 
 export const api = axios.create({
